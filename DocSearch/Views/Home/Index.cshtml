@@ -3,9 +3,20 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Upload File</h1>
+    <p class="lead">Upload your files to the cloud and access them from anywhere.</p>
+    <form action="@Url.Action("Upload","Home")" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <input type="file" name="file" id="file" class="inputfile">
+            <label for="file">
+                <span class="glyphicon glyphicon-file"></span>
+                <span class="file-text">Choose File</span>                
+            </label>
+        </div>
+        <button class="btn btn-primary btn-lg" type="submit">
+            <span class="glyphicon glyphicon-cloud-upload"></span> Upload            
+        </button>
+    </form>
 </div>
 
 <div class="row">

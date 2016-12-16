@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
 
 namespace DocSearch.Controllers
 {
@@ -25,6 +29,24 @@ namespace DocSearch.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
+            var blobClient = storageAccount.CreateCloudBlobClient();
+            var docsContainer = blobClient.GetContainerReference("docs");
+            var blockBlob = docsContainer.GetBlockBlobReference(Path.GetFileName(file.FileName));
+
+            using(var stream = file.InputStream)
+            {
+                blockBlob.UploadFromStream(stream);
+            }
+
+            blockBlob.Metadata.Add("tags", "test, docSearch");
+            blockBlob.SetMetadata();
+            return View("Index");
         }
     }
 }
