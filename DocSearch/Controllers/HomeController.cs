@@ -34,6 +34,7 @@ namespace DocSearch.Controllers
         [HttpPost]
         public ActionResult Upload(HttpPostedFileBase file)
         {
+            // Connects to the storage account
             var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             var blobClient = storageAccount.CreateCloudBlobClient();
             var docsContainer = blobClient.GetContainerReference("docs");
