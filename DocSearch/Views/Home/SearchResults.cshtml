@@ -1,0 +1,11 @@
+﻿@model IList<Microsoft.Azure.Search.Models.SearchResult<DocSearch.Controllers.Document>>
+<h2>Results</h2>
+
+<ul class="list-group">
+    @foreach(var item in Model)
+    {
+        <li class="list-group-item">
+            @item.Document.FileName
+        </li>
+    }
+</ul>

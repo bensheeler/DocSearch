@@ -33,7 +33,7 @@ textarea {
 }
 
 .inputfile + label {
-    color: Highlight;
+    color: #428bca;
     display: inline-block;    
     margin:0;
     padding:0;
@@ -41,7 +41,7 @@ textarea {
 
 .inputfile:focus + label,
 .inputfile + label:hover {
-    color:dodgerblue;
+    color:#2a6496;
 }
 
 .inputfile + label {

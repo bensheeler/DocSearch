@@ -7,6 +7,8 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using Microsoft.Azure.Search;
+using Newtonsoft.Json;
 
 namespace DocSearch.Controllers
 {
@@ -32,7 +34,7 @@ namespace DocSearch.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload(HttpPostedFileBase file, string tags)
         {
             var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -44,9 +46,36 @@ namespace DocSearch.Controllers
                 blockBlob.UploadFromStream(stream);
             }
 
-            blockBlob.Metadata.Add("tags", "test, docSearch");
+            blockBlob.Metadata.Add("uri", blockBlob.Uri.AbsoluteUri);
+            blockBlob.Metadata.Add("tags", tags);
+            blockBlob.Metadata.Add("contentType", file.ContentType);
             blockBlob.SetMetadata();
             return View("Index");
         }
+
+        [HttpGet]
+        public ActionResult Search(string search)
+        {
+            var searchServiceName = "sheeler-test";
+            var adminApiKey = "3994D4EB09087DCF293325E60A9A25BF";
+
+            var serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
+            var docsClient = serviceClient.Indexes.GetClient("docs");
+            var test = docsClient.Documents.Search(search);
+            var results = docsClient.Documents.Search<Document>(search);
+            return View("SearchResults", results.Results);            
+        }    
+    }
+
+    public class Document
+    {
+        [JsonProperty("tags")]
+        public string Tags { get; set; }
+
+        [JsonProperty("metadata_storage_size")]
+        public int? Bytes { get; set; }
+
+        [JsonProperty("metadata_storage_name")]
+        public string FileName { get; set; }
     }
 }
