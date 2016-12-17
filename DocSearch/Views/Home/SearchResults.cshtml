@@ -6,9 +6,11 @@
     {
         <li class="list-group-item">
             <h4 class="list-group-item-heading">
-                <a href="javascript:void(0)">@item.Document.FileName</a>
+                <a href="@item.Document.Uri">@item.Document.FileName</a>
             </h4>
-            <p class="list-group-item-text">@item.Document.Tags</p>            
+            <p class="list-group-item-text">@item.Document.Tags</p>          
+            <p class="list-group-item-text">@item.Document.ContentType</p>          
+            <p class="list-group-item-text">@(item.Document.Bytes / 1024) kb</p>  
         </li>
     }
 </ul>

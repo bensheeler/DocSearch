@@ -79,6 +79,10 @@ namespace DocSearch.Controllers
         [JsonProperty("metadata_storage_name")]
         public string FileName { get; set; }
 
+        [JsonProperty("uri")]
         public string Uri { get; set; }
+
+        [JsonProperty("contentType")]
+        public string ContentType { get; set; }
     }
 }
