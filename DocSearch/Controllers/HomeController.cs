@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Microsoft.Azure.Search;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace DocSearch.Controllers
 {
@@ -56,13 +57,13 @@ namespace DocSearch.Controllers
         [HttpGet]
         public ActionResult Search(string search)
         {
-            var searchServiceName = "sheeler-test";
-            var adminApiKey = "3994D4EB09087DCF293325E60A9A25BF";
+            var searchServiceName = ConfigurationManager.AppSettings["SearchApiName"];
+            var adminApiKey = ConfigurationManager.AppSettings["SearchApiKey"];
 
             var serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
-            var docsClient = serviceClient.Indexes.GetClient("docs");
-            var test = docsClient.Documents.Search(search);
+            var docsClient = serviceClient.Indexes.GetClient("docs");            
             var results = docsClient.Documents.Search<Document>(search);
+            ViewBag.TotalResults = results.Results.Count;
             return View("SearchResults", results.Results);            
         }    
     }
@@ -77,5 +78,7 @@ namespace DocSearch.Controllers
 
         [JsonProperty("metadata_storage_name")]
         public string FileName { get; set; }
+
+        public string Uri { get; set; }
     }
 }

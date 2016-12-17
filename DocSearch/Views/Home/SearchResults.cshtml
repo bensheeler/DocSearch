@@ -1,11 +1,14 @@
 ﻿@model IList<Microsoft.Azure.Search.Models.SearchResult<DocSearch.Controllers.Document>>
-<h2>Results</h2>
-
+<h2>Search Results</h2>
+<p>Total Results: @ViewBag.TotalResults</p>
 <ul class="list-group">
     @foreach(var item in Model)
     {
         <li class="list-group-item">
-            @item.Document.FileName
+            <h4 class="list-group-item-heading">
+                <a href="javascript:void(0)">@item.Document.FileName</a>
+            </h4>
+            <p class="list-group-item-text">@item.Document.Tags</p>            
         </li>
     }
 </ul>
