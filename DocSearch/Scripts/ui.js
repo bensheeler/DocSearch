@@ -1,5 +1,4 @@
 ﻿(function (window, document) {
-
     var layout = document.getElementById('layout'),
         menu = document.getElementById('menu'),
         menuLink = document.getElementById('menuLink'),

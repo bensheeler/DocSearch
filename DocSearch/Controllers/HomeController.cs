@@ -66,6 +66,13 @@ namespace DocSearch.Controllers
             ViewBag.TotalResults = results.Results.Count;
             return View("SearchResults", results.Results);            
         }    
+
+        [Route("{containerName}")]
+        public ActionResult Container(string containerName)
+        {
+            ViewBag.ProjectName = containerName;
+            return View("Project");
+        }
     }
 
     public class Document

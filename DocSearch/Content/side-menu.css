@@ -1,5 +1,5 @@
 ﻿body {
-    color: #777;
+    color: #333;
 }
 
 .pure-img-responsive {
@@ -40,9 +40,7 @@ This is the parent `<div>` that contains the menu and the content area.
 The content `<div>` is where all your content goes.
 */
 .content {
-    margin: 0 auto;
-    padding: 0 2em;
-    /*max-width: 800px;*/
+    margin: 0 auto;    
     margin-bottom: 50px;
     line-height: 1.6em;
 }
@@ -51,17 +49,18 @@ The content `<div>` is where all your content goes.
      margin: 0;
      color: #333;
      text-align: center;
-     padding: 2em 2em 0;
-     border-bottom: 1px solid #eee;
+     padding: 1em 1em 0;
+     border-bottom: 1px solid #ddd;
  }
     .header h1 {
         margin: 0.2em 0;
-        font-size: 3em;
+        font-size: 1.6em;
         font-weight: 300;
     }
      .header h2 {
+         font-size: 1em;
         font-weight: 300;
-        color: #ccc;
+        color: #888;
         padding: 0;
         margin-top: 0;
     }
@@ -69,7 +68,7 @@ The content `<div>` is where all your content goes.
 .content-subhead {
     margin: 50px 0 20px 0;
     font-weight: 300;
-    color: #888;
+    color: #555;
 }
 
 
@@ -211,12 +210,12 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 
     .header,
     .content {
-        padding-left: 2em;
-        padding-right: 2em;
+        padding-left:5em;
+        padding-right: 5em;
     }
 
     #layout {
-        padding-left: 150px; /* left col width "#menu" */
+        padding-left: 150px; 
         left: 0;
     }
     #menu {
