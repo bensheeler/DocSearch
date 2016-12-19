@@ -7,6 +7,9 @@ using Microsoft.Azure;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using Microsoft.Azure.Search;
+using Newtonsoft.Json;
+using System.Configuration;
 
 namespace DocSearch.Controllers
 {
@@ -32,7 +35,7 @@ namespace DocSearch.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file)
+        public ActionResult Upload(HttpPostedFileBase file, string tags)
         {
             var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             var blobClient = storageAccount.CreateCloudBlobClient();
@@ -44,9 +47,42 @@ namespace DocSearch.Controllers
                 blockBlob.UploadFromStream(stream);
             }
 
-            blockBlob.Metadata.Add("tags", "test, docSearch");
+            blockBlob.Metadata.Add("uri", blockBlob.Uri.AbsoluteUri);
+            blockBlob.Metadata.Add("tags", tags);
+            blockBlob.Metadata.Add("contentType", file.ContentType);
             blockBlob.SetMetadata();
             return View("Index");
         }
+
+        [HttpGet]
+        public ActionResult Search(string search)
+        {
+            var searchServiceName = ConfigurationManager.AppSettings["SearchApiName"];
+            var adminApiKey = ConfigurationManager.AppSettings["SearchApiKey"];
+
+            var serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
+            var docsClient = serviceClient.Indexes.GetClient("docs");            
+            var results = docsClient.Documents.Search<Document>(search);
+            ViewBag.TotalResults = results.Results.Count;
+            return View("SearchResults", results.Results);            
+        }    
+    }
+
+    public class Document
+    {
+        [JsonProperty("tags")]
+        public string Tags { get; set; }
+
+        [JsonProperty("metadata_storage_size")]
+        public int? Bytes { get; set; }
+
+        [JsonProperty("metadata_storage_name")]
+        public string FileName { get; set; }
+
+        [JsonProperty("uri")]
+        public string Uri { get; set; }
+
+        [JsonProperty("contentType")]
+        public string ContentType { get; set; }
     }
 }
