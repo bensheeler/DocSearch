@@ -24,13 +24,13 @@
             <h2 class="panel-header">Upload File</h2>
             <form action="@Url.Action("Upload","Home")" enctype="multipart/form-data" method="post" class="pure-form pure-form-stacked">
                 <input type="hidden" value="@ViewBag.ProjectName" id="containerName" name="containerName"/>
-                <input type="file" name="file" id="file" class="inputfile">
+                <input type="file" name="file" id="file" class="inputfile" required>
                 <label for="file">
                     <i class="fa fa-file"></i>
                     <span class="file-text">Choose File</span>
                 </label>
                 <label for="tags" class="sr-only">Tags</label>
-                <input type="text" id="tags" name="tags" placeholder="Tags (tag1, tag2, etc.)" />
+                <input type="text" id="tags" name="tags" placeholder="Tags (tag1, tag2, etc.)" required/>
                 <button class="pure-button pure-button-primary" type="submit">
                     <span class="fa fa-cloud-upload"></span> Upload
                 </button>
