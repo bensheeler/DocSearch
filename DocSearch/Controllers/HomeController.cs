@@ -35,11 +35,11 @@ namespace DocSearch.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(HttpPostedFileBase file, string tags)
+        public ActionResult Upload(HttpPostedFileBase file, string tags, string containerName)
         {
             var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("StorageConnectionString"));
             var blobClient = storageAccount.CreateCloudBlobClient();
-            var docsContainer = blobClient.GetContainerReference("docs");
+            var docsContainer = blobClient.GetContainerReference(containerName);
             var blockBlob = docsContainer.GetBlockBlobReference(Path.GetFileName(file.FileName));
 
             using(var stream = file.InputStream)
@@ -55,23 +55,23 @@ namespace DocSearch.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string search)
+        public ActionResult Search(string search, string containerName)
         {
             var searchServiceName = ConfigurationManager.AppSettings["SearchApiName"];
             var adminApiKey = ConfigurationManager.AppSettings["SearchApiKey"];
 
             var serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
-            var docsClient = serviceClient.Indexes.GetClient("docs");            
+            var docsClient = serviceClient.Indexes.GetClient(containerName);            
             var results = docsClient.Documents.Search<Document>(search);
             ViewBag.TotalResults = results.Results.Count;
             return View("SearchResults", results.Results);            
         }    
 
-        [Route("{containerName}")]
-        public ActionResult Container(string containerName)
+        [Route("{projectName}")]
+        public ActionResult Project(string projectName)
         {
-            ViewBag.ProjectName = containerName;
-            return View("Project");
+            ViewBag.ProjectName = projectName;
+            return View();
         }
     }
 
