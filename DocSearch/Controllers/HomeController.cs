@@ -88,11 +88,11 @@ namespace DocSearch.Controllers
 
             if (emailClaim == null)
             {
-                ViewBag.MenuItems = menuItems;
-                return PartialView();
+                return new EmptyResult();
             }
 
             var email = emailClaim.Value;
+            ViewBag.Email = email;
 
             var uri = new Uri(ConfigurationManager.AppSettings["docDb:Endpoint"]);
             var client = new DocumentClient(uri, ConfigurationManager.AppSettings["DocDb:AuthKey"]);
@@ -104,6 +104,7 @@ namespace DocSearch.Controllers
                 .Result;
 
             var userFolder = (UserFolders)(dynamic)document;
+            userFolder.Folders.Sort();
             ViewBag.MenuItems = userFolder.Folders;
             return PartialView();
         }
