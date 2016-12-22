@@ -1,6 +1,7 @@
 ﻿body {
     /*padding-top: 50px;*/
     padding-bottom: 20px;
+    background-color: #eee;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -80,7 +81,8 @@ input:-moz-placeholder { /* Firefox 18- */
     border: 1px solid #bbb;
     padding: 1em;
     margin: .5em;
-    box-shadow: 0 0 5px #888;
+    box-shadow: 0 0 5px #888;    
+    background-color:white;
 }
 
 .panel-header{
@@ -114,4 +116,10 @@ input:-moz-placeholder { /* Firefox 18- */
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.middle{
+    margin:auto;
+    background-color:blue;
+    width: 150px;
 }
