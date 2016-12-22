@@ -69,7 +69,7 @@ namespace DocSearch
             context.Response.Redirect("/");
         }
 
-        public bool IsReusable
+        public override bool IsReusable
         {
             get { return false; }
         }
