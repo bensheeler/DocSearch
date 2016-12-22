@@ -13,7 +13,7 @@ using System.Configuration;
 
 namespace DocSearch.Controllers
 {
-    [Authorize]
+    [Authorize]    
     public class HomeController : Controller
     {
         public ActionResult Index()
