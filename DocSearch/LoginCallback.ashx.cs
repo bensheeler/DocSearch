@@ -12,7 +12,6 @@ namespace DocSearch
     using System.Web;
     using System.Web.Mvc;
 
-    [AllowAnonymous]
     public class LoginCallback : HttpTaskAsyncHandler
     {
         public override async Task ProcessRequestAsync(HttpContext context)
