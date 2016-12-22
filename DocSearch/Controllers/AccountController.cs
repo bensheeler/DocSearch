@@ -4,6 +4,7 @@ using Auth0.AuthenticationApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IdentityModel.Services;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,20 +39,22 @@ namespace DocSearch.Controllers
         [HttpGet]
         public async Task<ActionResult> LoginCallback(string code)
         {
-            AuthenticationApiClient client = new AuthenticationApiClient(
-                new Uri(string.Format("https://{0}", ConfigurationManager.AppSettings["auth0:Domain"])));
-
-            var token = await client.ExchangeCodeForAccessTokenAsync(new ExchangeCodeRequest
+            try
             {
-                ClientId = ConfigurationManager.AppSettings["auth0:ClientId"],
-                ClientSecret = ConfigurationManager.AppSettings["auth0:ClientSecret"],
-                AuthorizationCode = HttpContext.Request.QueryString["code"],
-                RedirectUri = HttpContext.Request.Url.ToString()
-            });
+                AuthenticationApiClient client = new AuthenticationApiClient(
+                    new Uri(string.Format("https://{0}", ConfigurationManager.AppSettings["auth0:Domain"])));
 
-            var profile = await client.GetUserInfoAsync(token.AccessToken);
+                var token = await client.ExchangeCodeForAccessTokenAsync(new ExchangeCodeRequest
+                {
+                    ClientId = ConfigurationManager.AppSettings["auth0:ClientId"],
+                    ClientSecret = ConfigurationManager.AppSettings["auth0:ClientSecret"],
+                    AuthorizationCode = HttpContext.Request.QueryString["code"],
+                    RedirectUri = HttpContext.Request.Url.ToString()
+                });
 
-            var user = new List<KeyValuePair<string, object>>
+                var profile = await client.GetUserInfoAsync(token.AccessToken);
+
+                var user = new List<KeyValuePair<string, object>>
             {
                 new KeyValuePair<string, object>("name", profile.UserName ?? profile.Email),
                 new KeyValuePair<string, object>("email", profile.Email),
@@ -67,26 +70,33 @@ namespace DocSearch.Controllers
                 new KeyValuePair<string, object>("provider", profile.Identities.First().Provider)
             };
 
-            // NOTE: Uncomment the following code in order to include claims from associated identities
-            //profile.Identities.ToList().ForEach(i =>
-            //{
-            //    user.Add(new KeyValuePair<string, object>(i.Connection + ".access_token", i.AccessToken));
-            //    user.Add(new KeyValuePair<string, object>(i.Connection + ".provider", i.Provider));
-            //    user.Add(new KeyValuePair<string, object>(i.Connection + ".user_id", i.UserId));
-            //});
+                // NOTE: Uncomment the following code in order to include claims from associated identities
+                //profile.Identities.ToList().ForEach(i =>
+                //{
+                //    user.Add(new KeyValuePair<string, object>(i.Connection + ".access_token", i.AccessToken));
+                //    user.Add(new KeyValuePair<string, object>(i.Connection + ".provider", i.Provider));
+                //    user.Add(new KeyValuePair<string, object>(i.Connection + ".user_id", i.UserId));
+                //});
 
-            // NOTE: uncomment this if you send roles
-            // user.Add(new KeyValuePair<string, object>(ClaimTypes.Role, profile.ExtraProperties["roles"]));
+                // NOTE: uncomment this if you send roles
+                // user.Add(new KeyValuePair<string, object>(ClaimTypes.Role, profile.ExtraProperties["roles"]));
 
-            // NOTE: this will set a cookie with all the user claims that will be converted 
-            //       to a ClaimsPrincipal for each request using the SessionAuthenticationModule HttpModule. 
-            //       You can choose your own mechanism to keep the user authenticated (FormsAuthentication, Session, etc.)
-            FederatedAuthentication.SessionAuthenticationModule.CreateSessionCookie(user);
+                // NOTE: this will set a cookie with all the user claims that will be converted 
+                //       to a ClaimsPrincipal for each request using the SessionAuthenticationModule HttpModule. 
+                //       You can choose your own mechanism to keep the user authenticated (FormsAuthentication, Session, etc.)
+                FederatedAuthentication.SessionAuthenticationModule.CreateSessionCookie(user);
 
-            if (HttpContext.Request.QueryString["state"] != null && HttpContext.Request.QueryString["state"].StartsWith("ru="))
+                if (HttpContext.Request.QueryString["state"] != null && HttpContext.Request.QueryString["state"].StartsWith("ru="))
+                {
+                    var state = HttpUtility.ParseQueryString(HttpContext.Request.QueryString["state"]);
+                    return Redirect(state["ru"]);
+                }
+            }
+            catch(Exception ex)
             {
-                var state = HttpUtility.ParseQueryString(HttpContext.Request.QueryString["state"]);                
-                return Redirect(state["ru"]);
+                Trace.Write(ex.Message);
+                if (ex.InnerException != null)
+                    Trace.Write(ex.InnerException.Message);
             }
             return Redirect("/");
         }
