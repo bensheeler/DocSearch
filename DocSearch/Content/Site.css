@@ -1,5 +1,5 @@
 ﻿body {
-    padding-top: 50px;
+    /*padding-top: 50px;*/
     padding-bottom: 20px;
 }
 
@@ -51,4 +51,67 @@ textarea {
 .inputfile:focus + label {
 	outline: 1px dotted #000;
 	outline: -webkit-focus-ring-color auto 5px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #888;
+}
+input::-moz-placeholder { /* Firefox 19+ */
+  color: #888;
+}
+input:-ms-input-placeholder { /* IE 10+ */
+  color: #888;
+}
+input:-moz-placeholder { /* Firefox 18- */
+  color: #888;
+}
+
+.panel{
+    border: 1px solid #bbb;
+    padding: 1em;
+    margin: .5em;
+    box-shadow: 0 0 5px #888;
+}
+
+.panel-header{
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.list{
+    list-style:none;
+    padding:0;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    border-top: 1px solid #bbb;
+    border-radius:3px;
+}
+
+.list-item{
+    border-bottom: 1px solid #bbb;    
+    padding: 1em;
+}
+
+.list-item-heading{
+    margin-top:0;
+    margin-bottom:.5em;
+}
+
+.list-item-text{
+    margin-bottom:0;
+    margin-top:.5em;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

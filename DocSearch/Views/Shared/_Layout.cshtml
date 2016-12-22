@@ -4,40 +4,42 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocSearch</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/pure-min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.1/build/grids-responsive-min.css">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("DocSearch", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+    <div id="layout">
+        <!-- Menu toggle -->
+        <a href="#menu" id="menuLink" class="menu-link">
+            <!-- Hamburger icon -->
+            <span></span>
+        </a>
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="/">Doc Search</a>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item"><a href="/docs" class="pure-menu-link">Docs</a></li>
+                    <li class="pure-menu-item"><a href="/fdot" class="pure-menu-link">Fdot</a></li>
+                    <li class="pure-menu-item"><a href="/nexus" class="pure-menu-link">Nexus</a></li>
                 </ul>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - DocSearch</p>
-        </footer>
+        <div id="main">
+            <div class="header">
+                <h1>Doc Search</h1>
+                <h2>Upload your files to the cloud and access them anywhere</h2>
+            </div>
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+    @*<script src="Scripts/ui.js"></script>*@
+    <script src="https://use.fontawesome.com/a0528ea01a.js"></script>
     <script>
         var inputs = document.querySelectorAll('.inputfile');
         Array.prototype.forEach.call(inputs, function (input) {
