@@ -48,7 +48,7 @@ namespace DocSearch.Controllers
                 {
                     ClientId = ConfigurationManager.AppSettings["auth0:ClientId"],
                     ClientSecret = ConfigurationManager.AppSettings["auth0:ClientSecret"],
-                    AuthorizationCode = HttpContext.Request.QueryString["code"],
+                    AuthorizationCode = code,
                     RedirectUri = HttpContext.Request.Url.ToString()
                 });
 
@@ -96,6 +96,7 @@ namespace DocSearch.Controllers
             catch(Exception ex)
             {
                 Trace.TraceError(ex.Message);
+                Trace.TraceError(ex.StackTrace);
                 if (ex.InnerException != null)
                     Trace.TraceError(ex.InnerException.Message);
                 throw;
