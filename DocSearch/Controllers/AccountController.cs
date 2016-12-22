@@ -18,7 +18,7 @@ namespace DocSearch.Controllers
         {
             if (string.IsNullOrEmpty(returnUrl) || !this.Url.IsLocalUrl(returnUrl))
             {
-                returnUrl = "/";
+                returnUrl = "/Home";
             }
 
             // you can use this for the 'authParams.state' parameter
