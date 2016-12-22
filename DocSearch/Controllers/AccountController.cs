@@ -95,6 +95,10 @@ namespace DocSearch.Controllers
             }
             catch(Exception ex)
             {
+                Trace.TraceError(ConfigurationManager.AppSettings["auth0:ClientId"]);
+                Trace.TraceError(ConfigurationManager.AppSettings["auth0:ClientSecret"]);
+                Trace.TraceError(code);
+                Trace.TraceError(HttpContext.Request.Url.ToString());
                 Trace.TraceError(ex.Message);
                 Trace.TraceError(ex.StackTrace);
                 if (ex.InnerException != null)
