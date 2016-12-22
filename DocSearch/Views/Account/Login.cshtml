@@ -6,7 +6,7 @@
         redirectUrl: '@System.Configuration.ConfigurationManager.AppSettings["auth0:CallbackUrl"]',
         responseType: 'code',
         params: {
-            scope: 'openid email' // Learn about scopes: https://auth0.com/docs/scopes
+            scope: 'openid email app_metadata' // Learn about scopes: https://auth0.com/docs/scopes
         }
     }
     });

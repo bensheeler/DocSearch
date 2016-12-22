@@ -1,0 +1,9 @@
+﻿<div class="pure-menu">
+    <a class="pure-menu-heading" href="/">Doc Search</a>
+    <ul class="pure-menu-list">
+        @foreach (string folder in ViewBag.MenuItems)
+        {
+            <li class="pure-menu-item"><a href="/@folder" class="pure-menu-link capitalize">@folder</a></li>
+        }
+    </ul>
+</div>

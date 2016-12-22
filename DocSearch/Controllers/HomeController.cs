@@ -10,6 +10,11 @@ using System.IO;
 using Microsoft.Azure.Search;
 using Newtonsoft.Json;
 using System.Configuration;
+using System.Security.Claims;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
+using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 
 namespace DocSearch.Controllers
 {
@@ -63,7 +68,7 @@ namespace DocSearch.Controllers
 
             var serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
             var docsClient = serviceClient.Indexes.GetClient(containerName);            
-            var results = docsClient.Documents.Search<Document>(search);
+            var results = docsClient.Documents.Search<DocumentBlob>(search);
             ViewBag.TotalResults = results.Results.Count;
             return View("SearchResults", results.Results);            
         }    
@@ -74,9 +79,46 @@ namespace DocSearch.Controllers
             ViewBag.ProjectName = projectName;
             return View();
         }
+
+        [AllowAnonymous]
+        public ActionResult _Menu()
+        {
+            var menuItems = new List<string>();
+            var emailClaim = ClaimsPrincipal.Current?.FindFirst("email");
+
+            if (emailClaim == null)
+            {
+                ViewBag.MenuItems = menuItems;
+                return PartialView();
+            }
+
+            var email = emailClaim.Value;
+
+            var uri = new Uri(ConfigurationManager.AppSettings["docDb:Endpoint"]);
+            var client = new DocumentClient(uri, ConfigurationManager.AppSettings["DocDb:AuthKey"]);
+            var databaseId = ConfigurationManager.AppSettings["docDb:Database"];
+            var collectionId = ConfigurationManager.AppSettings["docDb:Collection"];
+
+            Document document = client.ReadDocumentAsync(
+                UriFactory.CreateDocumentUri(databaseId, collectionId, email))
+                .Result;
+
+            var userFolder = (UserFolders)(dynamic)document;
+            ViewBag.MenuItems = userFolder.Folders;
+            return PartialView();
+        }
     }
 
-    public class Document
+    public class UserFolders
+    {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("folders")]
+        public List<string> Folders { get; set; }
+    }
+
+    public class DocumentBlob
     {
         [JsonProperty("tags")]
         public string Tags { get; set; }

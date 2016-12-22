@@ -17,14 +17,7 @@
             <span></span>
         </a>
         <div id="menu">
-            <div class="pure-menu">
-                <a class="pure-menu-heading" href="/">Doc Search</a>
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item"><a href="/docs" class="pure-menu-link">Docs</a></li>
-                    <li class="pure-menu-item"><a href="/fdot" class="pure-menu-link">Fdot</a></li>
-                    <li class="pure-menu-item"><a href="/nexus" class="pure-menu-link">Nexus</a></li>
-                </ul>
-            </div>
+            @{Html.RenderAction("_Menu", "Home");}
         </div>
         <div id="main">
             <div class="header">
@@ -35,8 +28,7 @@
                 @RenderBody()
             </div>
         </div>
-    </div>
-
+    </div>    
 
     @*<script src="Scripts/ui.js"></script>*@
     <script src="https://use.fontawesome.com/a0528ea01a.js"></script>
