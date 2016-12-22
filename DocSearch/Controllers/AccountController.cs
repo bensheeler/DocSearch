@@ -95,9 +95,9 @@ namespace DocSearch.Controllers
             }
             catch(Exception ex)
             {
-                Trace.Write(ex.Message);
+                Trace.TraceError(ex.Message);
                 if (ex.InnerException != null)
-                    Trace.Write(ex.InnerException.Message);
+                    Trace.TraceError(ex.InnerException.Message);
                 throw;
             }            
         }
