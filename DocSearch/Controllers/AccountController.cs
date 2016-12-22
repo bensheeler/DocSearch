@@ -91,14 +91,15 @@ namespace DocSearch.Controllers
                     var state = HttpUtility.ParseQueryString(HttpContext.Request.QueryString["state"]);
                     return Redirect(state["ru"]);
                 }
+                return Redirect("/");
             }
             catch(Exception ex)
             {
                 Trace.Write(ex.Message);
                 if (ex.InnerException != null)
                     Trace.Write(ex.InnerException.Message);
-            }
-            return Redirect("/");
+                throw;
+            }            
         }
     }
 }
