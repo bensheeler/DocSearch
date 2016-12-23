@@ -15,6 +15,7 @@ using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.Documents;
+using DocSearch.Models;
 
 namespace DocSearch.Controllers
 {
@@ -103,37 +104,10 @@ namespace DocSearch.Controllers
                 UriFactory.CreateDocumentUri(databaseId, collectionId, email))
                 .Result;
 
-            var userFolder = (UserFolders)(dynamic)document;
+            var userFolder = (Models.User)(dynamic)document;
             userFolder.Folders.Sort();
             ViewBag.MenuItems = userFolder.Folders;
             return PartialView();
         }
-    }
-
-    public class UserFolders
-    {
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("folders")]
-        public List<string> Folders { get; set; }
-    }
-
-    public class DocumentBlob
-    {
-        [JsonProperty("tags")]
-        public string Tags { get; set; }
-
-        [JsonProperty("metadata_storage_size")]
-        public int? Bytes { get; set; }
-
-        [JsonProperty("metadata_storage_name")]
-        public string FileName { get; set; }
-
-        [JsonProperty("uri")]
-        public string Uri { get; set; }
-
-        [JsonProperty("contentType")]
-        public string ContentType { get; set; }
     }
 }
